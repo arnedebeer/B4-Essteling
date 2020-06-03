@@ -120,6 +120,7 @@ void setup() {
   pinMode(red, OUTPUT);
   pinMode(blue, OUTPUT);
   pinMode(green,OUTPUT);
+
 }
 
 void loop() {
@@ -311,6 +312,7 @@ void addToSequence(int button){
     lastRedValue = LOW;
     lastBlueValue = LOW;
     lastGreenValue = LOW;
+
    }
 
    void clearSequence(){
@@ -320,7 +322,7 @@ void addToSequence(int button){
   }
 
   void sendCorrect(){
-    mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "Correct");
+    mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "CORRECT");
   }
 
     void handleMqttMessage(String text){
@@ -345,6 +347,9 @@ void addToSequence(int button){
       else if(text.equals("BLUE_BUTTON_PRESSED")){
         androidButtonPressed = blue;
         androidButtonReceived = true;         
+      }
+      else if (text.equals("CONNECTED")){
+          mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "READY");
       }
     
   }
