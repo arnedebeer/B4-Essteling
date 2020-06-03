@@ -105,6 +105,7 @@ public class MqttManager {
             Log.d(LOG_TAG, "Successfully connected to MQTT server!");
 
             subscribeToTopic(MqttSettings.getFullEspTopic(), new MqttSubscribeActionListener());
+            publishToTopic(MqttSettings.getFullEspTopic(), MqttSettings.CONNECTED_MESSAGE);
         }
 
         @Override

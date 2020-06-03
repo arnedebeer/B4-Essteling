@@ -52,13 +52,13 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
 //        gameState = GameStates.START;
 
-        gameState = GameStates.WAITING_FOR_INPUT;
-
         mqttManager = MqttManager.getInstance();
         mqttManager.setMessageListener(this);
 
         // Notify the ESP the app is ready
         mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.READY_MESSAGE);
+
+        gameState = GameStates.WAITING_FOR_INPUT;
     }
 
     private void buttonPressed(String message) {

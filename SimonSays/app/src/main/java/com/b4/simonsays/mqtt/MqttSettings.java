@@ -23,6 +23,8 @@ public class MqttSettings {
     public static final String GREEN_BUTTON_PRESSED_MESSAGE = "GREEN_BUTTON_PRESSED";
     public static final String BLUE_BUTTON_PRESSED_MESSAGE = "BLUE_BUTTON_PRESSED";
 
+    public static final String CONNECTED_MESSAGE = "CONNECTED";
+
     public static final String READY_MESSAGE = "READY";
     public static final String LEAVE_MESSAGE = "LEAVE";
 
