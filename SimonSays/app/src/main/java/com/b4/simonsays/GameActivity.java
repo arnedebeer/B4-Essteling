@@ -54,6 +54,9 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
         mqttManager = MqttManager.getInstance();
         mqttManager.setMessageListener(this);
+
+        // Notify the ESP the app is ready
+        mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.READY_MESSAGE);
     }
 
     private void buttonPressed(String message) {
