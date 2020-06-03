@@ -50,7 +50,9 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         greenButton.setOnClickListener(e -> buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
         blueButton.setOnClickListener(e -> buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
 
-        gameState = GameStates.START;
+//        gameState = GameStates.START;
+
+        gameState = GameStates.WAITING_FOR_INPUT;
 
         mqttManager = MqttManager.getInstance();
         mqttManager.setMessageListener(this);
@@ -77,6 +79,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
                 showGameState();
                 break;
 
+            case MqttSettings.READY_MESSAGE:
             case MqttSettings.CORRECT_MESSAGE:
                 gameState = GameStates.WAITING_FOR_INPUT;
                 break;
