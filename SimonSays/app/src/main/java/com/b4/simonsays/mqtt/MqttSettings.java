@@ -1,7 +1,5 @@
 package com.b4.simonsays.mqtt;
 
-import android.util.Log;
-
 public class MqttSettings {
     private final String LOG_TAG = this.getClass().getName();
 
@@ -35,10 +33,6 @@ public class MqttSettings {
     public static final String WON_MESSAGE = "WON";
     public static final String WAITING_FOR_INPUT_MESSAGE = "WAITING_FOR_INPUT";
     public static final String WAITING_FOR_SEQUENCE_MESSAGE = "WAITING_FOR_SEQUENCE";
-
-    MqttSettings() {
-        Log.d(LOG_TAG, String.format("Initialized MqttSettings: %s, %s, %s, %s, %s, %s", SERVER_ADDRESS, PORT, USERNAME, PASSWORD, BASE_TOPIC, QOS));
-    }
 
     static String getFullServerAddress() {
         return String.format("tcp://%s:%s", SERVER_ADDRESS, PORT);

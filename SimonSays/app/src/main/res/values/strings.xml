@@ -1,10 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Shining Sapphires</string>
     <string name="first_part_name">Shining</string>
-    <string name="second_part_name">Sapphire</string>
+    <string name="second_part_name">Sapphires</string>
 
-    <string name="your_score">"Your score: "</string>
-    <string name="score_show_label">Score: </string>
+    <string name="scan_qr_code">Scan QR-code</string>
+
+    <string name="your_score">"Your score: %1$d"</string>
     <string name="end_result_label">Well played!</string>
     <string name="waiting">Waiting for the game…</string>
 
@@ -13,4 +15,8 @@
     <string name="dialog_help_title">Having trouble?</string>
     <string name="dialog_help_message">In this app you are supposed to follow the pattern that gets displayed in the cave. Be sure to carefully remember the correct pattern to gather more points!</string>
     <string name="dialog_help_confirm">Okay, I understand now</string>
+
+    <!--  Content description of images  -->
+    <string name="description_app_logo">App logo</string>
+    <string name="description_loading_icon">Loading icon</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.b4.simonsays;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +21,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
 
-public class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
+class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView scannerView;
 
@@ -49,11 +51,19 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
 
     //checks if ScannerAcivity has permission to use camera
     private boolean checkPermission() {
-        return (ContextCompat.checkSelfPermission(getContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+        Context context = getContext();
+        if (context != null) {
+            return (ContextCompat.checkSelfPermission(context, CAMERA) == PackageManager.PERMISSION_GRANTED);
+        }
+
+        return false;
     }
 
     private void requestPermission() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{CAMERA}, 3);
+        Activity activity = getActivity();
+        if (activity != null) {
+            ActivityCompat.requestPermissions(activity, new String[]{CAMERA}, 3);
+        }
     }
 
     @Override

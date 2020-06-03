@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true">
+    android:layout_height="wrap_content" >
 
     <TextView
         android:id="@+id/score"
         android:text="@string/your_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Large"/>
-
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:text="18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/score"
         style="@style/TextAppearance.AppCompat.Large"/>
 </RelativeLayout>

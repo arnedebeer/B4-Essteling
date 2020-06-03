@@ -63,7 +63,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     }
 
     @Override
-    public void onMessageArrived(String topic, MqttMessage message) {
+    public void onMessageArrived(MqttMessage message) {
 
         switch (message.toString()) {
             case MqttSettings.SHOWING_SEQUENCE_MESSAGE:

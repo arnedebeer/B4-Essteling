@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.b4.simonsays.mqtt.MessageListener;
 import com.b4.simonsays.mqtt.MqttManager;
+import com.b4.simonsays.mqtt.MqttSettings;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -41,8 +42,8 @@ public class WaitingFragment extends Fragment implements MessageListener {
     }
 
     @Override
-    public void onMessageArrived(String topic, MqttMessage message) {
-        if (message.toString().equals("START")) {
+    public void onMessageArrived(MqttMessage message) {
+        if (message.toString().equals(MqttSettings.READY_MESSAGE)) {
             Intent intent = new Intent(getContext(), GameActivity.class);
             startActivity(intent);
         }

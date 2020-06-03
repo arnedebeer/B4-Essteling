@@ -67,7 +67,7 @@ public class MqttManager {
         }
     }
 
-    public void subscribeToTopic(String topic, @Nullable IMqttActionListener iMqttActionListener) {
+    private void subscribeToTopic(String topic, @Nullable IMqttActionListener iMqttActionListener) {
         try {
             Log.d(LOG_TAG, String.format("Subscribing to topic \"%s\"...", topic));
             IMqttToken token = client.subscribe(topic, MqttSettings.QOS);
@@ -94,7 +94,7 @@ public class MqttManager {
         this.messageListener = messageListener;
     }
 
-    public boolean isConnected() {
+    private boolean isConnected() {
         return client.isConnected();
     }
 
@@ -113,7 +113,7 @@ public class MqttManager {
         }
     }
 
-    class MqttSubscribeActionListener implements IMqttActionListener {
+    static class MqttSubscribeActionListener implements IMqttActionListener {
 
         private final String LOG_TAG = this.getClass().getName();
 
@@ -144,7 +144,7 @@ public class MqttManager {
         public void messageArrived(String topic, MqttMessage message) {
             Log.d(LOG_TAG, String.format("Message (\"%s\") arrived on topic \"%s\"", topic, message.toString()));
 
-            messageListener.onMessageArrived(topic, message);
+            messageListener.onMessageArrived(message);
         }
 
         @Override
