@@ -14,6 +14,7 @@
             android:id="@+id/action_StartFragment_to_WaitingFragment"
             app:destination="@id/WaitingFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/WaitingFragment"
         android:name="com.b4.simonsays.WaitingFragment"

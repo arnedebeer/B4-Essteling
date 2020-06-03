@@ -21,7 +21,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static android.Manifest.permission.CAMERA;
 
-class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
+public class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView scannerView;
 
@@ -34,8 +34,10 @@ class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
+
         view.findViewById(R.id.scan_button).setOnClickListener(view1 -> startScannerView());
     }
 
