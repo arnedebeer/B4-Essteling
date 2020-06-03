@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -67,9 +68,10 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
         switch (message.toString()) {
             case MqttSettings.SHOWING_SEQUENCE_MESSAGE:
-            case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
+//            case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
             case MqttSettings.WAITING_FOR_SEQUENCE_MESSAGE:
                 gameState = GameStates.valueOf(message.toString());
+                showGameState();
                 break;
 
             case MqttSettings.CORRECT_MESSAGE:
@@ -81,6 +83,10 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
                 showEndDialog();
                 break;
         }
+    }
+
+    private void showGameState() {
+        Toast.makeText(this, "Current gamestate: " + this.gameState, Toast.LENGTH_SHORT).show();
     }
 
     private void showEndDialog() {
