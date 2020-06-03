@@ -3,10 +3,12 @@ package com.b4.simonsays;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +24,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import static android.Manifest.permission.CAMERA;
 
 public class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
-
+    
+    private AnimationDrawable startAnimation;
     private ZXingScannerView scannerView;
 
     @Override
@@ -30,11 +33,17 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_start, container, false);
+
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        
+        ImageView imageView = getView().findViewById(R.id.animationImage);
+        imageView.setBackgroundResource(R.drawable.animation);
+        startAnimation = (AnimationDrawable) imageView.getBackground();
+        startAnimation.run();
+        
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
 
