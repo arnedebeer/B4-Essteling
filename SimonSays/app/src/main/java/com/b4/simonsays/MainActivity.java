@@ -1,6 +1,7 @@
 package com.b4.simonsays;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        MqttManager.getInstance().connect(this.getApplicationContext());
 
-        /*Intent intent = new Intent(this, GameActivity.class);
+       /* Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);*/
     }
 
