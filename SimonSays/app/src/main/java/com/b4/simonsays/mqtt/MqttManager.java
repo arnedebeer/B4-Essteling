@@ -26,6 +26,8 @@ public class MqttManager {
 
     private MessageListener messageListener;
 
+    private boolean isConnected = false;
+
     public static MqttManager getInstance() {
         if (instance == null) {
             instance = new MqttManager();
@@ -34,9 +36,13 @@ public class MqttManager {
         return instance;
     }
 
-    private MqttManager() {}
+    private MqttManager() {
+    }
 
     public void connect(Context context) {
+
+        if (this.isConnected) return;
+
         String clientID = MqttClient.generateClientId();
 
         client = new MqttAndroidClient(context, MqttSettings.getFullServerAddress(), clientID);
@@ -58,7 +64,7 @@ public class MqttManager {
     }
 
     public void disconnect() {
-        if (!isConnected()) return;
+        if (!this.isConnected) return;
 
         try {
             client.disconnect();
@@ -92,10 +98,6 @@ public class MqttManager {
 
     public void setMessageListener(MessageListener messageListener) {
         this.messageListener = messageListener;
-    }
-
-    private boolean isConnected() {
-        return client.isConnected();
     }
 
     class MqttConnectActionListener implements IMqttActionListener {
@@ -134,11 +136,13 @@ public class MqttManager {
         @Override
         public void connectComplete(boolean reconnect, String serverURI) {
             Log.d(LOG_TAG, "Connected to MQTT server at " + serverURI);
+            isConnected = true;
         }
 
         @Override
         public void connectionLost(Throwable cause) {
             Log.d(LOG_TAG, String.format("Connection with MQTT server lost due to: %s", cause.getMessage()));
+            isConnected = false;
         }
 
         @Override
