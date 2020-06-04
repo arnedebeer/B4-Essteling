@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bluewait"/>
+
     <item android:state_pressed="true"
-        android:drawable="@drawable/blueclicked"/>
+        android:drawable="@drawable/button_green_pressed"/>
     <item android:state_enabled="true"
-        android:drawable="@drawable/blueclick"/>
+        android:drawable="@drawable/button_green_enabled"/>
+    <item android:drawable="@drawable/button_green_default"/>
 
 
 </selector>

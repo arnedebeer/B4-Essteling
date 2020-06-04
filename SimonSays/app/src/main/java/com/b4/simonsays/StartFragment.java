@@ -41,7 +41,7 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         super.onViewCreated(view, savedInstanceState);
         
         ImageView imageView = view.findViewById(R.id.animationImage);
-        imageView.setBackgroundResource(R.drawable.animation);
+        imageView.setBackgroundResource(R.drawable.animation_logo);
         startAnimation = (AnimationDrawable) imageView.getBackground();
         startAnimation.run();
         
