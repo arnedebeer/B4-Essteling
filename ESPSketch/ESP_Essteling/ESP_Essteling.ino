@@ -19,8 +19,8 @@ const char* MQTT_USERNAME = "androidTI";
 const char* MQTT_PASSWORD = "&FN+g$$Qhm7j";
 
 // Definieer de MQTT topics
-const char* MQTT_TOPIC_B4_SIMONSAYS = "groupb4/simonsays/esp_update";
-const char* MQTT_TOPIC_B4_ANDROID = "groupb4/simonsays/app_update";
+const char* MQTT_TOPIC_B4_SIMONSAYS = "groupb4/simonsays/esp_to_app";
+const char* MQTT_TOPIC_B4_ANDROID = "groupb4/simonsays/app_to_esp";
 // Definieer de te gebruiken Quality of Service (QoS)
 const int   MQTT_QOS = 0;
 
@@ -55,8 +55,9 @@ PubSubClient mqttClient(wifiClient);
   int androidButtonPressed;
   int currentIndex;
   boolean wonGame = false;
-  boolean isConnected;
+  boolean isConnected = false;
   boolean androidButtonReceived = false;
+  boolean isGameRunning = false;
 
 
  //GameStates
@@ -64,12 +65,12 @@ PubSubClient mqttClient(wifiClient);
 
 
  enum States{
-  STATE_IDLE,
-  STATE_CONNECTED,
-  STATE_WAITFORBUTTON,
-  STATE_WAITFORANDROID,
-  STATE_SHOWSEQUENCE,
-  STATE_ENDGAME
+  IDLE,
+  CONNECTED,
+  WAITING_FOR_BUTTON,
+  WAITING_FOR_ANDROID,
+  SHOW_SEQUENCE,
+  ENDGAME
   };
 
  States state;
@@ -77,7 +78,7 @@ PubSubClient mqttClient(wifiClient);
 void setup() {
   // put your setup code here, to run once:
 
-  //Zet de verbinding met het wifi aan.
+  //Turning on the WiFi connection
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
   WiFi.begin(WLAN_SSID, WLAN_ACCESS_KEY);
@@ -86,7 +87,7 @@ void setup() {
     Serial.print(".");
   }
 
-  // Zet de MQTT client op
+  // Set up the MQTT Client
   mqttClient.setServer(MQTT_BROKER_URL, MQTT_PORT);
   mqttClient.setCallback(mqttCallback);
 
@@ -96,7 +97,7 @@ void setup() {
   } else {
     Serial.println("Connected to MQTT broker");
   }
-  // Subscribe op de LCD topic
+  // Subscribe to the app topic
   if (!mqttClient.subscribe(MQTT_TOPIC_B4_ANDROID, MQTT_QOS)) {
     Serial.print("Failed to subscribe to topic ");
     Serial.println(MQTT_TOPIC_B4_ANDROID);
@@ -109,7 +110,8 @@ void setup() {
   
   Serial.begin(9600);
 
-  state = STATE_IDLE;
+  state = IDLE;
+  Serial.println("state: IDLE");
   
   pinMode(yellowButton, INPUT);
   pinMode(redButton, INPUT);
@@ -126,24 +128,23 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 mqttClient.loop();
-if(state == STATE_IDLE){
-  Serial.println("state: IDLE");
+if(state == IDLE){
   //accept connection
   if(isConnected){
-    state = STATE_CONNECTED;
+    state = CONNECTED;
       Serial.println("Connected!");
   }
  }
 if(isConnected){
-  if(state == STATE_CONNECTED){
+  if(state == CONNECTED){
     
     //Establish connection
-    state = STATE_WAITFORBUTTON;
+    state = WAITING_FOR_BUTTON;
+          Serial.println("state: WAITFORBUTTON");
       mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS,"WAITING_FOR_SEQUENCE");
     }
   
-  if(state == STATE_WAITFORBUTTON){
-      Serial.println("state: WAITFORBUTTON");
+  if(state == WAITING_FOR_BUTTON){
     timeCurrent = millis();
     yellowValue = digitalRead(yellowButton);
     redValue = digitalRead(redButton);
@@ -210,23 +211,23 @@ if(isConnected){
     lastGreenValue = greenValue;
 }
 
-  if(state == STATE_SHOWSEQUENCE){
-    Serial.println("state: SHOWSEQUENCE");    
+  if(state == SHOW_SEQUENCE){
     Lights();
-    state = STATE_WAITFORANDROID;
+    state = WAITING_FOR_ANDROID;
+        Serial.println("state: WAITFORANDROID");
     mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "WAITING_FOR_INPUT");
 
 }
 
-  if(state == STATE_WAITFORANDROID){
-    Serial.println("state: WAITFORANDROID");
+  if(state == WAITING_FOR_ANDROID){
+
     if(androidButtonReceived){
       androidButtonReceived = false;
     if(androidButtonPressed == sequence[currentIndex]){
       if(currentIndex == sequenceSize){
         if(sequenceSize == maxSequenceSize -1){
           //The answer is correct and is the last sequence
-          state = STATE_ENDGAME;
+          state = ENDGAME;
           wonGame = true;
           //CORRECT
           sendCorrect();
@@ -235,30 +236,33 @@ if(isConnected){
         else{
           //The answer is correct and a new sequence will play
         currentIndex = 0;
-        state = STATE_WAITFORBUTTON;
+        state = WAITING_FOR_BUTTON;
+              Serial.println("state: WAITFORBUTTON");
         //CORRECT
         sendCorrect();
-        mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS,"WATINING_FOR_SEQUENCE");
+        mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS,"WAITING_FOR_SEQUENCE");
         }
       }
       else{
         //The answer is correct and the sequence is not finished
         currentIndex += 1;
-        state = STATE_WAITFORANDROID;
+        state = WAITING_FOR_ANDROID;
+            Serial.println("state: WAITFORANDROID");
         //CORRECT
         sendCorrect();
+        mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "WAITING_FOR_INPUT");
       }
     }
     else{
       //The answer is incorrect and the game ends
-      state = STATE_ENDGAME;
+      state = ENDGAME;
       //WRONG
         mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "WRONG");
       }
   }
   }
 
-  if(state == STATE_ENDGAME){
+  if(state == ENDGAME){
       Serial.println("state: ENDGAME");
     if(wonGame){
       //send WON
@@ -266,20 +270,19 @@ if(isConnected){
     }
     else{
       //send LOST
-      
     }
     Reset();
   }
 
 }
 else{
-  Reset();
+    Reset();
   }
   
 }
 
 void addToSequence(int button){
-  state = STATE_SHOWSEQUENCE;
+  state = SHOW_SEQUENCE;
     sequenceSize += 1;
     if(sequenceSize > maxSequenceSize){
       sequenceSize = 0;
@@ -288,7 +291,7 @@ void addToSequence(int button){
   }
 
   void Lights(){
-    mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "SHOWING_SEQUENCE_ESP");
+    mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "SHOWING_SEQUENCE");
     Serial.println("Showing Sequence");
     delay(2000);
     for(int i = 0; i <= sequenceSize; i++){
@@ -302,7 +305,7 @@ void addToSequence(int button){
   void Reset(){
     clearSequence();
     sequenceSize = -1;
-    state = STATE_IDLE;
+    state = IDLE;
     currentIndex = 0;
     wonGame = false;
     timeCurrent = 0;
@@ -312,7 +315,8 @@ void addToSequence(int button){
     lastRedValue = LOW;
     lastBlueValue = LOW;
     lastGreenValue = LOW;
-
+    Serial.println("state: IDLE");
+    isConnected = false;
    }
 
    void clearSequence(){
@@ -326,7 +330,8 @@ void addToSequence(int button){
   }
 
     void handleMqttMessage(String text){
-      if(text.equals("READY")){
+      Serial.println("Message Recieved");
+      if(text.equals("APP_READY")){
         isConnected = true;
       }
       else if(text.equals("LEAVE")){
@@ -349,7 +354,7 @@ void addToSequence(int button){
         androidButtonReceived = true;         
       }
       else if (text.equals("CONNECTED")){
-          mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "READY");
+          mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, "ESP_READY");
       }
     
   }
