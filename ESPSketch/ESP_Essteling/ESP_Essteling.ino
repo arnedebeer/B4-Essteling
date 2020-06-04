@@ -353,7 +353,9 @@ void handleMqttMessage(String text){
     androidButtonReceived = true;         
   }
   else if (text.equals(CONNECTED_MESSAGE)){
+    if(!isConnected){
       mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, ESP_READY_MESSAGE);
+    }
   }
 }
 
