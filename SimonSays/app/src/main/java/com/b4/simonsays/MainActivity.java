@@ -1,21 +1,16 @@
 package com.b4.simonsays;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.b4.simonsays.mqtt.MqttManager;
-
 public class MainActivity extends AppCompatActivity {
-
 
     private final String LOG_TAG = this.getClass().getName();
 
@@ -26,13 +21,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-//        MqttManager.getInstance().connect(this.getApplicationContext());
-
         /*Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);*/
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_help){
+        if (id == R.id.action_help) {
             showHelpDialog(this);
         }
 
