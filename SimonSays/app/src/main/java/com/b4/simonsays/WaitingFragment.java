@@ -43,7 +43,7 @@ public class WaitingFragment extends Fragment implements MessageListener {
 
     @Override
     public void onMessageArrived(MqttMessage message) {
-        if (message.toString().equals(MqttSettings.READY_MESSAGE)) {
+        if (message.toString().equals(MqttSettings.ESP_READY_MESSAGE)) {
             Intent intent = new Intent(getContext(), GameActivity.class);
             startActivity(intent);
         }

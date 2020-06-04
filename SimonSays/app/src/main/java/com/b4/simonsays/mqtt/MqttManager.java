@@ -43,7 +43,7 @@ public class MqttManager {
         client.setCallback(new MqttCallBackHandler());
 
         MqttConnectOptions connectOptions = new MqttConnectOptions();
-        connectOptions.setWill(MqttSettings.getFullAppTopic(), MqttSettings.LEAVE_MESSAGE.getBytes(), MqttSettings.QOS, false);
+        connectOptions.setWill(MqttSettings.getFullAppTopic(), MqttSettings.APP_LEAVE_MESSAGE.getBytes(), MqttSettings.QOS, false);
         connectOptions.setUserName(MqttSettings.USERNAME);
         connectOptions.setPassword(MqttSettings.PASSWORD.toCharArray());
 

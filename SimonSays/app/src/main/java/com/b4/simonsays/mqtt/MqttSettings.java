@@ -14,8 +14,8 @@ public class MqttSettings {
 
     // MQTT topic settings
     private static final String BASE_TOPIC = "groupb4/simonsays";
-    private static final String APP_TOPIC = "app_update";
-    private static final String ESP_TOPIC = "esp_update";
+    private static final String APP_PUBLISH_TOPIC = "app_to_esp";
+    private static final String ESP_PUBLISH_TOPIC = "esp_to_app";
 
     // Possible messages that are expected to be sent
     public static final String RED_BUTTON_PRESSED_MESSAGE = "RED_BUTTON_PRESSED";
@@ -25,8 +25,8 @@ public class MqttSettings {
 
     public static final String CONNECTED_MESSAGE = "CONNECTED";
 
-    public static final String READY_MESSAGE = "READY";
-    public static final String LEAVE_MESSAGE = "LEAVE";
+    public static final String APP_READY_MESSAGE = "APP_READY";
+    public static final String APP_LEAVE_MESSAGE = "APP_LEAVE";
 
     // Possible messages that are expected to be received
     public static final String SHOWING_SEQUENCE_MESSAGE = "SHOWING_SEQUENCE";
@@ -35,16 +35,17 @@ public class MqttSettings {
     public static final String WON_MESSAGE = "WON";
     public static final String WAITING_FOR_INPUT_MESSAGE = "WAITING_FOR_INPUT";
     public static final String WAITING_FOR_SEQUENCE_MESSAGE = "WAITING_FOR_SEQUENCE";
+    public static final String ESP_READY_MESSAGE = "ESP_READY";
 
     static String getFullServerAddress() {
         return String.format("tcp://%s:%s", SERVER_ADDRESS, PORT);
     }
 
     public static String getFullAppTopic() {
-        return String.format("%s/%s", BASE_TOPIC, APP_TOPIC);
+        return String.format("%s/%s", BASE_TOPIC, APP_PUBLISH_TOPIC);
     }
 
     static String getFullEspTopic() {
-        return String.format("%s/%s", BASE_TOPIC, ESP_TOPIC);
+        return String.format("%s/%s", BASE_TOPIC, ESP_PUBLISH_TOPIC);
     }
 }

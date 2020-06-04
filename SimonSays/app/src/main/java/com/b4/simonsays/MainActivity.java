@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Connect to MQTT broker:
-        MqttManager.getInstance().connect(this.getApplicationContext());
+
+//        MqttManager.getInstance().connect(this.getApplicationContext());
 
         /*Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);*/

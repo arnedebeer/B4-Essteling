@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.b4.simonsays.mqtt.MqttManager;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -80,12 +81,15 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
     @Override
     public void handleResult(Result result) {
         if (result.getText().equals("Shining Saphires")) {
-            Toast.makeText(getContext(), result.getText(), Toast.LENGTH_SHORT).show();
+            // Connect to MQTT broker:
+            MqttManager.getInstance().connect(this.getContext());
+
+            // Navigate to WaitingFragment
             NavHostFragment.findNavController(StartFragment.this)
                     .navigate(R.id.action_StartFragment_to_WaitingFragment);
 
         } else {
-            Toast.makeText(getContext(), "geen goede qr-code", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Wrong QR-code", Toast.LENGTH_SHORT).show();
             scannerView.setVisibility(View.VISIBLE);
             scannerView.setResultHandler(this);
             scannerView.startCamera();

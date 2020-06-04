@@ -27,7 +27,6 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     private enum GameStates {
         START,
         SHOWING_SEQUENCE,
-        WON,
         WAITING_FOR_INPUT,
         WAITING_FOR_RESPONSE,
         WAITING_FOR_SEQUENCE
@@ -50,15 +49,13 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         greenButton.setOnClickListener(e -> buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
         blueButton.setOnClickListener(e -> buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
 
-//        gameState = GameStates.START;
+        gameState = GameStates.START;
 
         mqttManager = MqttManager.getInstance();
         mqttManager.setMessageListener(this);
 
         // Notify the ESP the app is ready
-        mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.READY_MESSAGE);
-
-        gameState = GameStates.WAITING_FOR_INPUT;
+        mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.APP_READY_MESSAGE);
     }
 
     private void buttonPressed(String message) {
@@ -73,15 +70,14 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
         switch (message.toString()) {
             case MqttSettings.SHOWING_SEQUENCE_MESSAGE:
-//            case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
             case MqttSettings.WAITING_FOR_SEQUENCE_MESSAGE:
+            case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
                 gameState = GameStates.valueOf(message.toString());
                 showGameState();
                 break;
 
-            case MqttSettings.READY_MESSAGE:
             case MqttSettings.CORRECT_MESSAGE:
-                gameState = GameStates.WAITING_FOR_INPUT;
+                addPoint();
                 break;
 
             case MqttSettings.WON_MESSAGE:
@@ -89,6 +85,10 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
                 showEndDialog();
                 break;
         }
+    }
+
+    private void addPoint() {
+
     }
 
     private void showGameState() {
