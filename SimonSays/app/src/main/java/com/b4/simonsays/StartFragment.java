@@ -25,8 +25,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import static android.Manifest.permission.CAMERA;
 
 public class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
-    
-    private AnimationDrawable startAnimation;
+
     private ZXingScannerView scannerView;
 
     @Override
@@ -34,17 +33,17 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_start, container, false);
-
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        
+
         ImageView imageView = view.findViewById(R.id.animationImage);
-        imageView.setBackgroundResource(R.drawable.animation_logo);
-        startAnimation = (AnimationDrawable) imageView.getBackground();
+        AnimationDrawable startAnimation = (AnimationDrawable) imageView.getBackground();
         startAnimation.run();
-        
+
+        handleResult(new Result("Shining Saphires", null, null, null));
+
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
 
@@ -61,7 +60,7 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         scannerView.startCamera();
     }
 
-    //checks if ScannerAcivity has permission to use camera
+    //checks if ScannerActivity has permission to use camera
     private boolean checkPermission() {
         Context context = getContext();
         if (context != null) {
@@ -89,7 +88,7 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
                     .navigate(R.id.action_StartFragment_to_WaitingFragment);
 
         } else {
-            Toast.makeText(getContext(), "Wrong QR-code", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.unrecognized_qr_code, Toast.LENGTH_SHORT).show();
             scannerView.setVisibility(View.VISIBLE);
             scannerView.setResultHandler(this);
             scannerView.startCamera();

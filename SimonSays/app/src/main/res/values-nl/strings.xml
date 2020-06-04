@@ -16,6 +16,9 @@
     <string name="waiting_for_response_state">Aan het wachten op een reactie van de server…</string>
     <string name="waiting_for_input_state">Je kan nu de volgende knop indrukken!</string>
 
+    <!--  QR-Code scanning  -->
+    <string name="unrecognized_qr_code">De QR-code werd niet herkend!</string>
+
     <!--  Help menu item and dialog  -->
     <string name="action_help">Help</string>
     <string name="dialog_help_title">Problemen?</string>
@@ -24,5 +27,6 @@
 
     <!--  Content description of images  -->
     <string name="description_app_logo">App logo</string>
-    <string name="description_loading_icon">Loading icon</string>
+    <string name="description_loading_icon">Laad icoon</string>
+    <string name="description_animating_icon">"Animerend icoon"</string>
 </resources>
