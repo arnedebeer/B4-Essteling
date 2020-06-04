@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    tools:showIn="@layout/activity_game">
+
+    <ImageButton
+        android:id="@+id/redButton"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/white_overlay"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_red_selector"
+        android:layout_weight="1"
+        />
+
+    <ImageButton
+        android:id="@+id/yellowButton"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/white_overlay"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_yellow_selector"
+        android:layout_weight="1"
+        />
+
+    <ImageButton
+        android:id="@+id/greenButton"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/white_overlay"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_green_selector"
+        android:layout_weight="1"
+        />
+
+    <ImageButton
+        android:id="@+id/blueButton"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="@color/white_overlay"
+        android:scaleType="fitCenter"
+        android:src="@drawable/button_blue_selector"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>
