@@ -10,11 +10,17 @@
     <string name="end_result_label">Goed gespeeld!</string>
     <string name="waiting">Wachten op het spel…</string>
 
+    <!--  Game states text to display to the user  -->
+    <string name="showing_sequence_state">Het spel is momenteel het patroon aan het tonen. Let goed op!</string>
+    <string name="waiting_for_sequence_state">Het spel is aan het wachten op de volgende toevoeging in het patroon!</string>
+    <string name="waiting_for_response_state">Aan het wachten op een reactie van de server…</string>
+    <string name="waiting_for_input_state">Je kan nu de volgende knop indrukken!</string>
+
     <!--  Help menu item and dialog  -->
     <string name="action_help">Help</string>
     <string name="dialog_help_title">Problemen?</string>
     <string name="dialog_help_confirm">Oké, ik begrijp het</string>
-    <string name="dialog_help_message">In deze app is het de bedoeling om het patroon dat getoond te worden in de grot na te bootsen. Zorg ervoor dat je goed oplet om zoveel mogelijk punten te behalen!</string>
+    <string name="dialog_help_message">In deze app is het de bedoeling om het patroon dat in de grot getoond wordt na te bootsen. Zorg ervoor dat je goed oplet om zoveel mogelijk punten te behalen!</string>
 
     <!--  Content description of images  -->
     <string name="description_app_logo">App logo</string>

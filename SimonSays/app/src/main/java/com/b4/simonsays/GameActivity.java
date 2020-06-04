@@ -30,6 +30,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     private int score = 0;
 
     private TextView scoreTextView;
+    private TextView gameStateTextView;
 
     private ImageButton redButton;
     private ImageButton yellowButton;
@@ -37,11 +38,11 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     private ImageButton blueButton;
 
     private enum GameStates {
-        START,
         SHOWING_SEQUENCE,
         WAITING_FOR_INPUT,
         WAITING_FOR_RESPONSE,
-        WAITING_FOR_SEQUENCE
+        WAITING_FOR_SEQUENCE,
+        GAME_END
     }
 
     private GameStates gameState;
@@ -63,10 +64,12 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
         this.updateButtons(false);
 
-        this.gameState = GameStates.START;
+        this.gameState = GameStates.WAITING_FOR_RESPONSE;
 
         this.scoreTextView = findViewById(R.id.score);
         this.scoreTextView.setText(getString(R.string.your_score, this.score));
+
+        this.gameStateTextView = findViewById(R.id.game_state_textView);
 
         this.mqttManager = MqttManager.getInstance();
         this.mqttManager.setMessageListener(this);
@@ -79,6 +82,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         if (this.gameState.equals(GameStates.WAITING_FOR_INPUT)) {
             this.mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), message);
             this.gameState = GameStates.WAITING_FOR_RESPONSE;
+            updateGameStateText();
         }
     }
 
@@ -90,7 +94,6 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
             case MqttSettings.WAITING_FOR_SEQUENCE_MESSAGE:
             case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
                 this.gameState = GameStates.valueOf(message.toString());
-                showGameState();
                 break;
 
             case MqttSettings.CORRECT_MESSAGE:
@@ -99,11 +102,13 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
             case MqttSettings.WON_MESSAGE:
             case MqttSettings.WRONG_MESSAGE:
+                this.gameState = GameStates.GAME_END;
                 showEndDialog();
                 break;
         }
 
         updateButtons(this.gameState == GameStates.WAITING_FOR_INPUT);
+        updateGameStateText();
     }
 
     private void updateButtons(boolean enable) {
@@ -115,16 +120,25 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         this.blueButton.setEnabled(enable);
     }
 
+    private void updateGameStateText() {
+        Log.d(LOG_TAG, "Current gamestate: " + this.gameState);
+
+        String gameStateText = "";
+        switch (this.gameState){
+            case SHOWING_SEQUENCE: gameStateText = getString(R.string.showing_sequence_state); break;
+            case WAITING_FOR_SEQUENCE: gameStateText = getString(R.string.waiting_for_sequence_state); break;
+            case WAITING_FOR_INPUT: gameStateText = getString(R.string.waiting_for_input_state); break;
+            case WAITING_FOR_RESPONSE: gameStateText = getString(R.string.waiting_for_response_state); break;
+        }
+
+        this.gameStateTextView.setText(gameStateText);
+    }
+
     private void addPoint() {
         this.score++;
         this.scoreTextView.setText(getString(R.string.your_score, this.score));
 
         Log.d(LOG_TAG, "Added one point to the score! The new score is " + this.score);
-    }
-
-    private void showGameState() {
-        Log.d(LOG_TAG, "Current gamestate: " + this.gameState);
-        Toast.makeText(this, "Current gamestate: " + this.gameState, Toast.LENGTH_SHORT).show();
     }
 
     private void showEndDialog() {

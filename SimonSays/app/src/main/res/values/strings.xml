@@ -10,6 +10,12 @@
     <string name="end_result_label">Well played!</string>
     <string name="waiting">Waiting for the game…</string>
 
+    <!--  Game states text to display to the user  -->
+    <string name="showing_sequence_state">The game is currently displaying the sequence. Be sure to follow along!</string>
+    <string name="waiting_for_sequence_state">The game is currently waiting for the next addition to the sequence!</string>
+    <string name="waiting_for_response_state">Waiting for a response from the server…</string>
+    <string name="waiting_for_input_state">You can now enter the next button!</string>
+
     <!--  Help menu item and dialog  -->
     <string name="action_help">Help</string>
     <string name="dialog_help_title">Having trouble?</string>
