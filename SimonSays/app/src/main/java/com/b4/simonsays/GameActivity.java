@@ -2,11 +2,13 @@ package com.b4.simonsays;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,15 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
     private MqttManager mqttManager;
 
+    private int score = 0;
+
+    private TextView scoreTextView;
+
+    private ImageButton redButton;
+    private ImageButton yellowButton;
+    private ImageButton greenButton;
+    private ImageButton blueButton;
+
     private enum GameStates {
         START,
         SHOWING_SEQUENCE,
@@ -40,27 +51,32 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        ImageButton redButton = findViewById(R.id.redButton);
-        ImageButton yellowButton = findViewById(R.id.yellowButton);
-        ImageButton greenButton = findViewById(R.id.greenButton);
-        ImageButton blueButton = findViewById(R.id.blueButton);
+        this.redButton = findViewById(R.id.redButton);
+        this.yellowButton = findViewById(R.id.yellowButton);
+        this.greenButton = findViewById(R.id.greenButton);
+        this.blueButton = findViewById(R.id.blueButton);
 
-        redButton.setOnClickListener(e -> buttonPressed(MqttSettings.RED_BUTTON_PRESSED_MESSAGE));
-        yellowButton.setOnClickListener(e -> buttonPressed(MqttSettings.YELLOW_BUTTON_PRESSED_MESSAGE));
-        greenButton.setOnClickListener(e ->buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
-        blueButton.setOnClickListener(e ->buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
+        this.redButton.setOnClickListener(e -> buttonPressed(MqttSettings.RED_BUTTON_PRESSED_MESSAGE));
+        this.yellowButton.setOnClickListener(e -> buttonPressed(MqttSettings.YELLOW_BUTTON_PRESSED_MESSAGE));
+        this.greenButton.setOnClickListener(e -> buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
+        this.blueButton.setOnClickListener(e -> buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
 
-        gameState = GameStates.START;
+        this.updateButtons(false);
 
-        mqttManager = MqttManager.getInstance();
-        mqttManager.setMessageListener(this);
+        this.gameState = GameStates.START;
+
+        this.scoreTextView = findViewById(R.id.score);
+        this.scoreTextView.setText(getString(R.string.your_score, this.score));
+
+        this.mqttManager = MqttManager.getInstance();
+        this.mqttManager.setMessageListener(this);
 
         // Notify the ESP the app is ready
-        mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.APP_READY_MESSAGE);
+        this.mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.APP_READY_MESSAGE);
     }
 
     private void buttonPressed(String message) {
-        if (gameState.equals(GameStates.WAITING_FOR_INPUT)) {
+        if (this.gameState.equals(GameStates.WAITING_FOR_INPUT)) {
             this.mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), message);
             this.gameState = GameStates.WAITING_FOR_RESPONSE;
         }
@@ -73,7 +89,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
             case MqttSettings.SHOWING_SEQUENCE_MESSAGE:
             case MqttSettings.WAITING_FOR_SEQUENCE_MESSAGE:
             case MqttSettings.WAITING_FOR_INPUT_MESSAGE:
-                gameState = GameStates.valueOf(message.toString());
+                this.gameState = GameStates.valueOf(message.toString());
                 showGameState();
                 break;
 
@@ -86,20 +102,41 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
                 showEndDialog();
                 break;
         }
+
+        updateButtons(this.gameState == GameStates.WAITING_FOR_INPUT);
+    }
+
+    private void updateButtons(boolean enable) {
+        Log.d(LOG_TAG, String.format("Buttons %s!", enable ? "enabled" : "disabled"));
+
+        this.redButton.setEnabled(enable);
+        this.yellowButton.setEnabled(enable);
+        this.greenButton.setEnabled(enable);
+        this.blueButton.setEnabled(enable);
     }
 
     private void addPoint() {
+        this.score++;
+        this.scoreTextView.setText(getString(R.string.your_score, this.score));
 
+        Log.d(LOG_TAG, "Added one point to the score! The new score is " + this.score);
     }
 
     private void showGameState() {
+        Log.d(LOG_TAG, "Current gamestate: " + this.gameState);
         Toast.makeText(this, "Current gamestate: " + this.gameState, Toast.LENGTH_SHORT).show();
     }
 
     private void showEndDialog() {
+        Log.d(LOG_TAG, "Game ended! Showing end dialog");
+
+        View view = View.inflate(this, R.layout.dialog_game_end, null);
+
+        TextView endScoreTextView = view.findViewById(R.id.end_score);
+        endScoreTextView.setText(getString(R.string.your_score, this.score));
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        View view = View.inflate(this, R.layout.dialog_game_end, null);
         builder.setView(view);
 
         view.findViewById(R.id.button_confirm).setOnClickListener(v -> {
@@ -120,7 +157,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_help){
+        if (id == R.id.action_help) {
             MainActivity.showHelpDialog(this);
         }
 
