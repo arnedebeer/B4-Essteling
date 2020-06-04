@@ -7,48 +7,52 @@
     android:layout_margin="16dp"
     tools:showIn="@layout/activity_game" >
 
-    <Button
+    <ImageButton
+        android:src="@drawable/redclick"
         android:id="@+id/redButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="48dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/white_overlay"
 
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/colorRed"
         app:layout_constraintBottom_toTopOf="@+id/greenButton"
         app:layout_constraintEnd_toStartOf="@+id/yellowButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
+        android:src="@drawable/yellowclick"
         android:id="@+id/yellowButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/white_overlay"
 
-        android:backgroundTint="@color/colorYellow"
         app:layout_constraintBottom_toTopOf="@+id/blueButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/redButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
+        android:src="@drawable/greenclick"
         android:id="@+id/greenButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="48dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/white_overlay"
 
-        android:backgroundTint="@color/colorGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/blueButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/redButton" />
 
-    <Button
+    <ImageButton
+        android:src="@drawable/blueclick"
         android:id="@+id/blueButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:backgroundTint="@color/colorBlue"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@color/white_overlay"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

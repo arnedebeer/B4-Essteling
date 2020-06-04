@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);*/
     }
 
     @Override

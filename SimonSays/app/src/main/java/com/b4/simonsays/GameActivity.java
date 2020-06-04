@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,15 +40,15 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Button redButton = findViewById(R.id.redButton);
-        Button yellowButton = findViewById(R.id.yellowButton);
-        Button greenButton = findViewById(R.id.greenButton);
-        Button blueButton = findViewById(R.id.blueButton);
+        ImageButton redButton = findViewById(R.id.redButton);
+        ImageButton yellowButton = findViewById(R.id.yellowButton);
+        ImageButton greenButton = findViewById(R.id.greenButton);
+        ImageButton blueButton = findViewById(R.id.blueButton);
 
         redButton.setOnClickListener(e -> buttonPressed(MqttSettings.RED_BUTTON_PRESSED_MESSAGE));
         yellowButton.setOnClickListener(e -> buttonPressed(MqttSettings.YELLOW_BUTTON_PRESSED_MESSAGE));
-        greenButton.setOnClickListener(e -> buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
-        blueButton.setOnClickListener(e -> buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
+        greenButton.setOnClickListener(e ->buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
+        blueButton.setOnClickListener(e ->buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
 
         gameState = GameStates.START;
 
