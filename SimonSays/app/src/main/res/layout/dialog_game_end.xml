@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     android:theme="@style/AppTheme.GameView"
-    tools:showIn=".MainActivity"
-    android:padding="16dp" >
+    tools:showIn=".MainActivity">
 
     <TextView
         android:id="@+id/tv_correctness"
@@ -17,38 +17,23 @@
         android:textSize="30sp"
         android:theme="@style/AppTheme.TextView" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/end_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_correctness"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:id="@+id/score_holder">
-
-        <TextView
-            android:id="@+id/tv_score_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/your_score"
-            android:textSize="20sp"
-            android:theme="@style/AppTheme.TextView" />
-
-        <TextView
-            android:id="@+id/tv_score_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:theme="@style/AppTheme.TextView"
-            />
-    </LinearLayout>
+        android:text="@string/your_score"
+        android:textSize="20sp"
+        android:theme="@style/AppTheme.TextView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/end_score"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
-        android:layout_below="@id/score_holder"
         android:theme="@style/AppTheme.Button"
         app:fabCustomSize="64dp"
         app:maxImageSize="48dp"
