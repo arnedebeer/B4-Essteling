@@ -8,7 +8,7 @@
     tools:showIn="@layout/activity_game" >
 
     <ImageButton
-        android:src="@drawable/redclick"
+        android:src="@drawable/redbutton"
         android:id="@+id/redButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:src="@drawable/yellowclick"
+        android:src="@drawable/yellowbutton"
         android:id="@+id/yellowButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:src="@drawable/greenclick"
+        android:src="@drawable/greenbutton"
         android:id="@+id/greenButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/redButton" />
 
     <ImageButton
-        android:src="@drawable/blueclick"
+        android:src="@drawable/bluebutton"
         android:id="@+id/blueButton"
         android:layout_width="200dp"
         android:layout_height="200dp"
