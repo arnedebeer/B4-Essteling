@@ -20,20 +20,18 @@ import java.nio.charset.StandardCharsets;
 public class MqttManager {
     private static final String LOG_TAG = MqttManager.class.getName();
 
-    private static MqttManager instance;
-
     private MqttAndroidClient client;
 
     private MessageListener messageListener;
 
     private boolean isConnected = false;
 
-    public static MqttManager getInstance() {
-        if (instance == null) {
-            instance = new MqttManager();
-        }
+    private static class MqttManagerHolder {
+        private static MqttManager instance = new MqttManager();
+    }
 
-        return instance;
+    public static MqttManager getInstance() {
+        return MqttManagerHolder.instance;
     }
 
     private MqttManager() {

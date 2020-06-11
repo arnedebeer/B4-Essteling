@@ -2,6 +2,7 @@ package com.b4.simonsays;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
@@ -59,17 +60,14 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-        if (scannerView.getVisibility() == View.VISIBLE){
-            startScannerView();
-        }
     }
 
     private void startScannerView() {
         if (!checkPermission()) {
             requestPermission();
         }
-        
+
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         scannerView.setVisibility(View.VISIBLE);
         scanButton.setVisibility(View.GONE);
         scannerView.setResultHandler(this);
@@ -96,6 +94,9 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
     @Override
     public void handleResult(Result result) {
         if (result.getText().equals("Shining Saphires")) {
+
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+
             // Connect to MQTT broker:
             MqttManager.getInstance().connect(this.getContext());
 
