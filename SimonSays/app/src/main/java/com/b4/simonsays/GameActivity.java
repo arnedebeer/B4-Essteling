@@ -27,6 +27,8 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
 
     private MqttManager mqttManager;
 
+    private boolean isEnded = false;
+
     private int score = 0;
 
     private TextView scoreTextView;
@@ -62,20 +64,29 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         this.greenButton.setOnClickListener(e -> buttonPressed(MqttSettings.GREEN_BUTTON_PRESSED_MESSAGE));
         this.blueButton.setOnClickListener(e -> buttonPressed(MqttSettings.BLUE_BUTTON_PRESSED_MESSAGE));
 
-        this.updateButtons(false);
-
-        this.gameState = GameStates.WAITING_FOR_RESPONSE;
-
-        this.scoreTextView = findViewById(R.id.score);
-        this.scoreTextView.setText(getString(R.string.your_score, this.score));
-
-        this.gameStateTextView = findViewById(R.id.game_state_textView);
-
         this.mqttManager = MqttManager.getInstance();
         this.mqttManager.setMessageListener(this);
 
-        // Notify the ESP the app is ready
-        this.mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.APP_READY_MESSAGE);
+        this.gameStateTextView = findViewById(R.id.game_state_textView);
+
+        if (savedInstanceState != null) {
+            this.score = savedInstanceState.getInt("score");
+            this.gameState = GameStates.valueOf(savedInstanceState.getString("gameState"));
+            updateGameStateText();
+
+            if (savedInstanceState.getBoolean("isEnded")) {
+                showEndDialog();
+            }
+        } else {
+            this.updateButtons(false);
+            this.gameState = GameStates.WAITING_FOR_RESPONSE;
+
+            // Notify the ESP the app is ready
+            this.mqttManager.publishToTopic(MqttSettings.getFullAppTopic(), MqttSettings.APP_READY_MESSAGE);
+        }
+
+        this.scoreTextView = findViewById(R.id.score);
+        this.scoreTextView.setText(getString(R.string.your_score, this.score));
     }
 
     private void buttonPressed(String message) {
@@ -124,11 +135,19 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         Log.d(LOG_TAG, "Current gamestate: " + this.gameState);
 
         String gameStateText = "";
-        switch (this.gameState){
-            case SHOWING_SEQUENCE: gameStateText = getString(R.string.showing_sequence_state); break;
-            case WAITING_FOR_SEQUENCE: gameStateText = getString(R.string.waiting_for_sequence_state); break;
-            case WAITING_FOR_INPUT: gameStateText = getString(R.string.waiting_for_input_state); break;
-            case WAITING_FOR_RESPONSE: gameStateText = getString(R.string.waiting_for_response_state); break;
+        switch (this.gameState) {
+            case SHOWING_SEQUENCE:
+                gameStateText = getString(R.string.showing_sequence_state);
+                break;
+            case WAITING_FOR_SEQUENCE:
+                gameStateText = getString(R.string.waiting_for_sequence_state);
+                break;
+            case WAITING_FOR_INPUT:
+                gameStateText = getString(R.string.waiting_for_input_state);
+                break;
+            case WAITING_FOR_RESPONSE:
+                gameStateText = getString(R.string.waiting_for_response_state);
+                break;
         }
 
         this.gameStateTextView.setText(gameStateText);
@@ -142,6 +161,7 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
     }
 
     private void showEndDialog() {
+        this.isEnded = true;
         Log.d(LOG_TAG, "Game ended! Showing end dialog");
 
         View view = View.inflate(this, R.layout.dialog_game_end, null);
@@ -176,5 +196,16 @@ public class GameActivity extends AppCompatActivity implements MessageListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        savedInstanceState.putInt("score", this.score);
+        savedInstanceState.putString("gameState", this.gameState.toString());
+        savedInstanceState.putBoolean("isEnded", this.isEnded);
     }
 }
