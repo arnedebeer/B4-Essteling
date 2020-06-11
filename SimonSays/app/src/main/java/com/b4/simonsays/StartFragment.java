@@ -3,6 +3,7 @@ package com.b4.simonsays;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.b4.simonsays.mqtt.MqttManager;
@@ -33,7 +36,6 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_start, container, false);
     }
 
@@ -46,12 +48,21 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
 
         //handleResult(new Result("Shining Saphires", null, null, null));
         scanButton = view.findViewById(R.id.scan_button);
+
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
         scanButton.setVisibility(View.VISIBLE);
 
-
         scanButton.setOnClickListener(view1 -> startScannerView());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (scannerView.getVisibility() == View.VISIBLE){
+            startScannerView();
+        }
     }
 
     private void startScannerView() {
