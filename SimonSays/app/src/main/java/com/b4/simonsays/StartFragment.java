@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import static android.Manifest.permission.CAMERA;
 public class StartFragment extends Fragment implements ZXingScannerView.ResultHandler {
 
     private ZXingScannerView scannerView;
+    private Button scanButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +44,15 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         AnimationDrawable startAnimation = (AnimationDrawable) imageView.getBackground();
         startAnimation.run();
 
-        handleResult(new Result("Shining Saphires", null, null, null));
-
+        //handleResult(new Result("Shining Saphires", null, null, null));
+        scanButton = view.findViewById(R.id.scan_button);
+        
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
+        scanButton.setVisibility(View.VISIBLE);
 
-        view.findViewById(R.id.scan_button).setOnClickListener(view1 -> startScannerView());
+
+        scanButton.setOnClickListener(view1 -> startScannerView());
     }
 
     private void startScannerView() {
@@ -56,6 +61,7 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         }
 
         scannerView.setVisibility(View.VISIBLE);
+        scanButton.setVisibility(View.GONE);
         scannerView.setResultHandler(this);
         scannerView.startCamera();
     }
