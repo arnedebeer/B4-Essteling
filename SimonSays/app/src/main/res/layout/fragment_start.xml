@@ -11,7 +11,7 @@
         android:rotation="-4"
         android:text="@string/first_part_name"
         android:textColor="@color/colorBlue"
-        android:textSize="72sp"
+        android:textSize="70sp"
 
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/scan_button"
