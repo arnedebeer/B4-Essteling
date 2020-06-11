@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/textview_first"
@@ -14,8 +16,8 @@
         android:textSize="70sp"
 
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,35 +36,38 @@
 
     <ImageView
         android:id="@+id/animationImage"
-        android:layout_width="wrap_content"
+        android:layout_width="400dp"
+        android:layout_height="250dp"
         android:background="@drawable/animation"
-        android:layout_height="300dp"
+        android:contentDescription="@string/description_animating_icon"
         app:layout_constraintBottom_toTopOf="@id/scan_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview"
-        android:contentDescription="@string/description_animating_icon" />
+        app:layout_constraintTop_toBottomOf="@id/textview"
+        app:layout_constraintVertical_bias="0.135" />
 
     <Button
         android:id="@+id/scan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="56dp"
+
         android:backgroundTint="@color/colorRed"
 
         android:text="@string/scan_qr_code"
-
         android:textColor="@color/white_overlay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintHorizontal_bias="0.944"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <me.dm7.barcodescanner.zxing.ZXingScannerView
         android:id="@+id/scannerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

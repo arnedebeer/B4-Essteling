@@ -46,7 +46,6 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
 
         //handleResult(new Result("Shining Saphires", null, null, null));
         scanButton = view.findViewById(R.id.scan_button);
-        
         scannerView = view.findViewById(R.id.scannerView);
         scannerView.setVisibility(View.GONE);
         scanButton.setVisibility(View.VISIBLE);
@@ -59,7 +58,7 @@ public class StartFragment extends Fragment implements ZXingScannerView.ResultHa
         if (!checkPermission()) {
             requestPermission();
         }
-
+        
         scannerView.setVisibility(View.VISIBLE);
         scanButton.setVisibility(View.GONE);
         scannerView.setResultHandler(this);
