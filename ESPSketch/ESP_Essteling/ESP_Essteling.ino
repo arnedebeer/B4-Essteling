@@ -36,6 +36,7 @@ PubSubClient mqttClient(wifiClient);
   int redLed = 33;
   int blueLed = 26;
   int greenLed = 25;
+  int randomLed[] = {yellowLed, redLed, blueLed, greenLed};
 
   //sequence parameters
   int sequenceSize = -1;
@@ -56,6 +57,7 @@ PubSubClient mqttClient(wifiClient);
   long timeCurrentButtonPressed = 0;
   long timePreviousButtonPressed = 0; 
   long millisecBetweenButtons = 2000;
+  long timeUntilRandom = 15000;
 
   //game data
   int androidButtonPressed;
@@ -159,6 +161,7 @@ if(isConnected){
   if(state == CONNECTED){
     
     state = WAITING_FOR_BUTTON;
+    timePreviousButtonPressed = millis();
     Serial.println("state: WAITFORBUTTON");
     mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, WAITING_FOR_SEQUENCE_MESSAGE);
   }
@@ -201,6 +204,13 @@ if(isConnected){
         timePreviousButtonPressed = timeCurrentButtonPressed;
       }
     }
+  if(timeCurrentButtonPressed - timePreviousButtonPressed > timeUntilRandom){
+    int randomIndex = random(4);
+    int randomLedValue = randomLed[randomIndex];
+    showLight(randomLedValue);
+    addToSequence(randomLedValue);
+    timePreviousButtonPressed;
+  }
     lastYellowValue = yellowValue;
     lastRedValue = redValue;
     lastBlueValue = blueValue;
@@ -232,6 +242,7 @@ if(isConnected){
             //The answer is correct and a new sequence will play
             currentIndex = 0;
             state = WAITING_FOR_BUTTON;
+            timePreviousButtonPressed = millis();
             Serial.println("state: WAITFORBUTTON");
             sendCorrect();
             mqttClient.publish(MQTT_TOPIC_B4_SIMONSAYS, WAITING_FOR_SEQUENCE_MESSAGE);
@@ -315,6 +326,8 @@ void Reset(){
   lastBlueValue = LOW;
   lastGreenValue = LOW;
   isConnected = false;
+  androidButtonReceived = false;
+  isGameRunning = false;
  }
 
 //clears the sequence
